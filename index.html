@@ -19,6 +19,51 @@
       .background-color {
         background-color: rgb(242, 242, 242)!important;
       }
+      
+      .selection-scroll-area {
+        overflow: auto !important;
+        height: 100% !important;
+      }
+      
+      .fill-full {
+        width: 100%;
+        height: 100%;
+      }
+      
+        /* Create two equal columns that floats next to each other */
+        .column {
+        float: left;
+        width: 50%;
+        }
+        
+        /* Clear floats after the columns */
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+        
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+        .column {
+            width: 100%;
+        }
+        .selection-scroll-area {
+            overflow: auto;
+            height: auto;
+            max-height: 50;
+        }
+        }
+      
+      html, body {margin: 0; height: 100%; overflow: hidden}
 
       .w3-theme-l5 {color:#000 !important; background-color:#fefefd !important}
       .w3-theme-l4 {color:#000 !important; background-color:#fcfcfa !important}
@@ -43,8 +88,12 @@
       .w3-hover-text-theme:hover {color:#f1eee4 !important}
       .w3-hover-border-theme:hover {border-color:#f1eee4 !important}
 
+      .songtag + .songtag {
+        margin-left: 8px;
+      }
+
     </style>
-    <link data-trunk rel="tailwind-css" href="w3.css" /> 
+    <link data-trunk rel="css" href="w3.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body></body>
