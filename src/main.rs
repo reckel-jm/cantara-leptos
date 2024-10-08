@@ -1,5 +1,5 @@
 use html::button;
-use leptos::{logging::log, *};
+use leptos::*;
 use web_sys::HtmlElement;
 use leptos_hotkeys::use_hotkeys;
 
@@ -118,7 +118,10 @@ fn SongSelectionPage(
                     <button class="w3-button" style="width:100%"
                         on:click=move |_| {
                             select_song(child.0);
-                            dbg!("Printed {}", child.0);
+                            log::info!("Printed {}", child.0);
+                        }
+                        on:contextmenu=move |_| {
+                            log::info!("Right click issued");
                         }
                     >
                         <strong>{ child.1.name }</strong><br/>
@@ -146,6 +149,7 @@ fn SongFileTagsBadges(song_file_tags: ReadSignal<Vec<String>>) -> impl IntoView 
     }
 }
 
+/// This is the footer of the song selection page (where some buttons are located)
 #[component]
 fn SongSelectionFooter() -> impl IntoView {
     view! {
