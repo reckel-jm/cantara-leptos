@@ -109,16 +109,24 @@ fn SongSelectionPage(
 
     view! {
         <div class="row"> 
-            <div class="w3-hoverable w3-mobile column selection-scroll-area">
+            <div class="w3-hoverable w3-mobile column">
+                <div class="selection-scroll-area">
+                <select name="songrepo-songs" size={song_repo_reader.get_untracked().len()} >
                 <For
                     each=move || song_repo_reader.get().into_iter().enumerate()
                     key=|(_, file)| file.name.clone()
                     let:child
                 >
-                    <button class="w3-button" style="width:100%"
-                        on:click=move |_| {
+                    <option style="width:100%"
+                        on:dblclick=move |_| {
                             select_song(child.0);
                             log::info!("Printed {}", child.0);
+                        }
+                        on:keydown=move |keyboard_event| {
+                            if keyboard_event.key() == "Enter" {
+                                select_song(child.0);
+                                log::info!("Printed {} via Enter", child.0);
+                            }
                         }
                         on:contextmenu=move |_| {
                             log::info!("Right click issued");
@@ -127,8 +135,10 @@ fn SongSelectionPage(
                         <strong>{ child.1.name }</strong><br/>
                         { child.1.author }<br />
                         <SongFileTagsBadges song_file_tags=create_signal(child.1.tags).0 />
-                    </button>
+                    </option>
                 </For> 
+                </select>
+                </div>
             </div>
             <SongSelectionBox song_selection_reader=song_selection_reader song_selection_writer=song_selection_writer/>
         </div>

@@ -23,6 +23,28 @@
       .selection-scroll-area {
         overflow: auto !important;
         height: 100% !important;
+        width: 100%;
+
+      }
+
+      select {
+        background-color: transparent;
+        width: 100%;
+        border: none;
+        appearance: none;
+      }
+
+      option {
+        appearance: none;
+        border: none;
+        padding: 8px 16px;
+        vertical-align: middle;
+        overflow: hidden;
+        color: inherit;
+        background-color: inherit;
+        text-align: center;
+        cursor: pointer;
+        white-space: nowrap;
       }
       
       .fill-full {
@@ -30,29 +52,29 @@
         height: 100%;
       }
       
-        /* Create two equal columns that floats next to each other */
-        .column {
+      /* Create two equal columns that floats next to each other */
+      .column {
         float: left;
         width: 50%;
-        }
-        
-        /* Clear floats after the columns */
-        .row:after {
+      }
+      
+      /* Clear floats after the columns */
+      .row:after {
         content: "";
         display: table;
         clear: both;
-        }
-        
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-        }
-        
-        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-        @media screen and (max-width: 600px) {
+      }
+      
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+      }
+      
+      /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+      @media screen and (max-width: 600px) {
         .column {
             width: 100%;
         }
@@ -61,7 +83,7 @@
             height: auto;
             max-height: 50;
         }
-        }
+      }
       
       html, body {margin: 0; height: 100%; overflow: hidden}
 
