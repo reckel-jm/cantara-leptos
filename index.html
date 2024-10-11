@@ -2,6 +2,13 @@
 <html>
   <head>
     <style>
+      :root {
+        --color-l5-foreground: #000;
+        --color-l5-background: #fefefd;
+        --color-l4-foreground: #000;
+        --color-l4-background: #fcfcfa;
+      }
+
       body {
         background-color: rgb(242, 242, 242);
         padding: 0;
@@ -27,24 +34,8 @@
 
       }
 
-      select {
-        background-color: transparent;
-        width: 100%;
-        border: none;
-        appearance: none;
-      }
+      .select-button:hover,selected {
 
-      option {
-        appearance: none;
-        border: none;
-        padding: 8px 16px;
-        vertical-align: middle;
-        overflow: hidden;
-        color: inherit;
-        background-color: inherit;
-        text-align: center;
-        cursor: pointer;
-        white-space: nowrap;
       }
       
       .fill-full {
@@ -113,6 +104,9 @@
       .songtag + .songtag {
         margin-left: 8px;
       }
+
+      .w3-select-theme { color:#000 !important; background-color:#f1eee4 !important }
+
 
     </style>
     <link data-trunk rel="css" href="w3.css" />

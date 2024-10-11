@@ -107,20 +107,28 @@ fn SongSelectionPage(
         song_selection_writer.update(|x| x.push(song_file.clone()))
     };
 
+    let (selected_entry, selected_entry_writer) = create_signal(None);
+
     view! {
         <div class="row"> 
             <div class="w3-hoverable w3-mobile column">
                 <div class="selection-scroll-area">
-                <select name="songrepo-songs" size={song_repo_reader.get_untracked().len()} >
                 <For
                     each=move || song_repo_reader.get().into_iter().enumerate()
-                    key=|(_, file)| file.name.clone()
+                    key=move |(_, file)| (file.name.clone(), selected_entry)
                     let:child
                 >
-                    <option style="width:100%"
+                    <button class="w3-button w3-animate-bottom"
+                    class:w3-select-theme=move || {
+                        selected_entry.get().is_some() && selected_entry.get().unwrap() == child.0
+                    }
+                    style="width:100%"
                         on:dblclick=move |_| {
                             select_song(child.0);
                             log::info!("Printed {}", child.0);
+                        }
+                        on:click=move |_| {
+                            selected_entry_writer.set(Some(child.0));
                         }
                         on:keydown=move |keyboard_event| {
                             if keyboard_event.key() == "Enter" {
@@ -135,9 +143,8 @@ fn SongSelectionPage(
                         <strong>{ child.1.name }</strong><br/>
                         { child.1.author }<br />
                         <SongFileTagsBadges song_file_tags=create_signal(child.1.tags).0 />
-                    </option>
+                    </button>
                 </For> 
-                </select>
                 </div>
             </div>
             <SongSelectionBox song_selection_reader=song_selection_reader song_selection_writer=song_selection_writer/>
