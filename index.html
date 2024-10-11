@@ -7,6 +7,8 @@
         --color-l5-background: #fefefd;
         --color-l4-foreground: #000;
         --color-l4-background: #fcfcfa;
+        --color-d4-background: #b1a068;
+        --color-d4-foreground: #fff;
       }
 
       body {
@@ -105,7 +107,11 @@
         margin-left: 8px;
       }
 
-      .w3-select-theme { color:#000 !important; background-color:#f1eee4 !important }
+      .w3-select-theme { 
+        color: var(--color-d4-foreground) !important; 
+        background-color: var(--color-d4-background) !important;
+        border: 1px;
+      }
 
 
     </style>

@@ -99,18 +99,56 @@ fn SongSelectionPage(
     /// The WriteSignal to the SongSelection vector where the selected SongFiles are saved, they will be modified inside this page.
     song_selection_writer: WriteSignal<Vec<SongFile>>   
     ) -> impl IntoView {
-        
+
+    let (selected_entry, selected_entry_writer) = create_signal(None);
+
     let select_song = move |i: usize| {
         dbg!(i);
         let song_files = song_repo_reader.get();
         let song_file = song_files.get(i).unwrap();
-        song_selection_writer.update(|x| x.push(song_file.clone()))
+        song_selection_writer.update(|x| x.push(song_file.clone()));
+        selected_entry_writer.set(Some(i));
     };
 
-    let (selected_entry, selected_entry_writer) = create_signal(None);
 
     view! {
-        <div class="row"> 
+        <div class="row"
+        on:keydown=move |keyboard_event| {
+            if keyboard_event.key() == "Enter" {
+                if selected_entry.get().is_some() {
+                    select_song(selected_entry.get().unwrap());
+                }
+            };
+            if keyboard_event.key() == "ArrowDown" {
+                match selected_entry.get() {
+                    Some(index) => {
+                        if index < song_repo_reader.get().len()-1 { 
+                            selected_entry_writer.set(Some(index+1)); 
+                        }
+                    },
+                    None => {
+                        if song_repo_reader.get().len() > 0 {
+                            selected_entry_writer.set(Some(1))
+                        }
+                    }
+                }
+            };
+            if keyboard_event.key() == "ArrowUp" {
+                match selected_entry.get() {
+                    Some(index) => {
+                        if index > 0 { 
+                            selected_entry_writer.set(Some(index-1)); 
+                        }
+                    },
+                    None => {
+                        if song_repo_reader.get().len() > 0 {
+                            selected_entry_writer.set(Some(1))
+                        }
+                    }
+                }
+            }
+        }
+        > 
             <div class="w3-hoverable w3-mobile column">
                 <div class="selection-scroll-area">
                 <For
@@ -129,12 +167,6 @@ fn SongSelectionPage(
                         }
                         on:click=move |_| {
                             selected_entry_writer.set(Some(child.0));
-                        }
-                        on:keydown=move |keyboard_event| {
-                            if keyboard_event.key() == "Enter" {
-                                select_song(child.0);
-                                log::info!("Printed {} via Enter", child.0);
-                            }
                         }
                         on:contextmenu=move |_| {
                             log::info!("Right click issued");
@@ -222,7 +254,7 @@ fn SongSelectionDeleteEntryButton(
         )
     };
     
-    view ! {
+    view! {
         <button 
             class="w3-circle" 
             on:click=move |_| { delete_entry(); }
