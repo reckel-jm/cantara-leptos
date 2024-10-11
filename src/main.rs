@@ -68,10 +68,7 @@ fn App(song_repo_reader: ReadSignal<Vec<SongFile>>) -> impl IntoView {
     let (show_header, set_show_header) = create_signal(true);
     let song_selection: Vec<SongFile> = vec![];
     let (song_selection, set_song_selection) = create_signal(song_selection);
-    
-    /*use_hotkeys!(("keys") => move |_| {
-        dbg!("Pressed an f");
-    });*/
+
     
     view! {
         <Show when=move || active_page.get() != ActivePage::Presentation><Header /></Show>
@@ -103,7 +100,6 @@ fn SongSelectionPage(
     let (selected_entry, selected_entry_writer) = create_signal(None);
 
     let select_song = move |i: usize| {
-        dbg!(i);
         let song_files = song_repo_reader.get();
         let song_file = song_files.get(i).unwrap();
         song_selection_writer.update(|x| x.push(song_file.clone()));
@@ -116,7 +112,9 @@ fn SongSelectionPage(
         on:keydown=move |keyboard_event| {
             if keyboard_event.key() == "Enter" {
                 if selected_entry.get().is_some() {
-                    select_song(selected_entry.get().unwrap());
+                    let index = selected_entry.get().unwrap();
+                    select_song(index);
+                    selected_entry_writer.set(Some(index));
                 }
             };
             if keyboard_event.key() == "ArrowDown" {
@@ -202,8 +200,11 @@ fn SongFileTagsBadges(song_file_tags: ReadSignal<Vec<String>>) -> impl IntoView 
 #[component]
 fn SongSelectionFooter() -> impl IntoView {
     view! {
-        <div class="footer">
-            <p>Presentation buttons come here</p>
+        <div class="w3-bar w3-theme-d1 footer">
+            <div class="w3-button w3-border w3-theme-l4 w3-round-large" style="margin-left:50px">Settings...</div>
+                <div class="w3-button w3-border w3-theme-l4 w3-round-large" style="float:right;">
+                Presentation...
+            </div>
         </div>
     }
 }

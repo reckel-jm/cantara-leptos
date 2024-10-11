@@ -3,8 +3,22 @@ name = "cantara-leptos"
 version = "0.1.0"
 edition = "2021"
 
+[profile.wasm-release]
+inherits = "release"
+opt-level = 'z'
+lto = true
+codegen-units = 1
+
+[profile.release]
+    opt-level = 'z'
+lto = true
+codegen-units = 1
+
 [dependencies]
 console_error_panic_hook = "0.1.7"
 leptos = { version = "0.6.15", features = ["csr"] }
 leptos_hotkeys = "0.2.2"
 log = "0.4.22"
+
+[package.metadata.leptos]
+lib-profile-release = "wasm-release"    
