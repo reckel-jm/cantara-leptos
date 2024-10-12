@@ -77,7 +77,13 @@ fn App(song_repo_reader: ReadSignal<Vec<SongFile>>) -> impl IntoView {
 
         <div class="w3-container w3-theme" style="margin-left:38.5px;height:100%">
             <Show when=move || active_page.get() == ActivePage::SongSelection>
-                <div class="w3-animate-opacity fill-full"><SongSelectionPage song_repo_reader=song_repo_reader song_selection_reader=song_selection song_selection_writer=set_song_selection /></div>
+                <div class="w3-animate-opacity fill-full">
+                    <SongSelectionPage song_repo_reader=song_repo_reader 
+                    song_selection_reader=song_selection 
+                    song_selection_writer=set_song_selection 
+                    active_page_setter=set_active_page 
+                    />
+                </div>
             </Show>
             <Show when=move || active_page.get() == ActivePage::Settings>
                 <div class="w3-animate-opacity fill-full"><SettingsPage /></div>
@@ -94,7 +100,9 @@ fn SongSelectionPage(
     /// The ReadSignal to the SongSelection vector where the selected SongFiles are saved
     song_selection_reader: ReadSignal<Vec<SongFile>>,
     /// The WriteSignal to the SongSelection vector where the selected SongFiles are saved, they will be modified inside this page.
-    song_selection_writer: WriteSignal<Vec<SongFile>>   
+    song_selection_writer: WriteSignal<Vec<SongFile>>,
+    /// The setter for the ActivePage
+    active_page_setter: WriteSignal<ActivePage>        
     ) -> impl IntoView {
 
     let (selected_entry, selected_entry_writer) = create_signal(None);
@@ -179,7 +187,7 @@ fn SongSelectionPage(
             </div>
             <SongSelectionBox song_selection_reader=song_selection_reader song_selection_writer=song_selection_writer/>
         </div>
-        <SongSelectionFooter />
+        <SongSelectionFooter active_page_setter=active_page_setter />
     }
 }
 
@@ -198,13 +206,23 @@ fn SongFileTagsBadges(song_file_tags: ReadSignal<Vec<String>>) -> impl IntoView 
 
 /// This is the footer of the song selection page (where some buttons are located)
 #[component]
-fn SongSelectionFooter() -> impl IntoView {
+fn SongSelectionFooter(
+    active_page_setter: WriteSignal<ActivePage>
+) -> impl IntoView {
     view! {
         <div class="w3-bar w3-theme-d1 footer">
-            <button class="w3-button w3-border w3-theme-l4 w3-round-large" style="margin-left:50px">
+            <button class="w3-button w3-border w3-theme-l4 w3-round-large" style="margin-left:50px"
+            on:click=move |_| {
+                active_page_setter.set(ActivePage::Presentation);
+            }
+            >
                 Presentation...
             </button>
-            <button class="w3-button w3-border w3-theme-l4 w3-round-large" style="float:right;">
+            <button class="w3-button w3-border w3-theme-l4 w3-round-large" style="float:right;"
+            on:click=move |_| {
+                active_page_setter.set(ActivePage::Settings);
+            }
+            >
                 Settings...
             </button>
         </div>
