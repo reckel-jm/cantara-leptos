@@ -108,7 +108,7 @@ fn SongSelectionPage(
 
 
     view! {
-        <div class="row"
+        <div class="row fill-full"
         on:keydown=move |keyboard_event| {
             if keyboard_event.key() == "Enter" {
                 if selected_entry.get().is_some() {
@@ -147,8 +147,8 @@ fn SongSelectionPage(
             }
         }
         > 
-            <div class="w3-hoverable w3-mobile column">
-                <div class="selection-scroll-area">
+                <div class="w3-hoverable w3-mobile column" style="height:100%">
+                    <div class="selection-scroll-area">
                 <For
                     each=move || song_repo_reader.get().into_iter().enumerate()
                     key=move |(_, file)| (file.name.clone(), selected_entry)
@@ -201,10 +201,12 @@ fn SongFileTagsBadges(song_file_tags: ReadSignal<Vec<String>>) -> impl IntoView 
 fn SongSelectionFooter() -> impl IntoView {
     view! {
         <div class="w3-bar w3-theme-d1 footer">
-            <div class="w3-button w3-border w3-theme-l4 w3-round-large" style="margin-left:50px">Settings...</div>
-                <div class="w3-button w3-border w3-theme-l4 w3-round-large" style="float:right;">
+            <button class="w3-button w3-border w3-theme-l4 w3-round-large" style="margin-left:50px">
                 Presentation...
-            </div>
+            </button>
+            <button class="w3-button w3-border w3-theme-l4 w3-round-large" style="float:right;">
+                Settings...
+            </button>
         </div>
     }
 }
@@ -217,7 +219,8 @@ fn SongSelectionBox(
     song_selection_writer: WriteSignal<Vec<SongFile>>
 ) -> impl IntoView {
     view! {
-        <div class="w3-hoverable w3-mobile column selection-scroll-area">
+        <div class="w3-hoverable w3-mobile column" style="height:100%">
+            <div class="selection-scroll-area">
             <Show when=move || {song_selection_reader.get().is_empty()}>
                 <p>Please select a song first</p>
             </Show>
@@ -238,6 +241,7 @@ fn SongSelectionBox(
                     </button>
                 </For> 
             </Show>
+            </div>
         </div>
     }
 }
@@ -310,7 +314,7 @@ fn ShowHeaderButton(get_show_header: ReadSignal<bool>, set_show_header: WriteSig
 #[component]
 fn Header() -> impl IntoView {
     view! {
-        <div class="w3-row w3-padding w3-theme-d2 w3-large">
+        <div class="w3-row w3-padding w3-theme-d2 w3-normal">
             <div class="w3-quarter">
                 <div class="w3-bar w3-cell-middle" style="margin:auto">
                     Cantara
@@ -322,7 +326,7 @@ fn Header() -> impl IntoView {
             </div>
 
             <div class="w3-quarter">
-                <div class="w3-bar w3-large">
+                    <div class="w3-bar w3-normal">
                     <a href="#" class="w3-bar-item w3-button w3-left"><i class="fa fa-search"></i></a>
                 </div>
             </div>
